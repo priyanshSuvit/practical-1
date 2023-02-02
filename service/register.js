@@ -1,4 +1,5 @@
 const { user } = require('../models/users');
+const generateUniqueId = require('generate-unique-id');
 
  async function register(req,res)  {
      try {
@@ -16,7 +17,9 @@ const { user } = require('../models/users');
                         result : {...temp}
                     }
                 }
-                const newUser = new user(req);
+                const id = generateUniqueId();
+                let request = {...req,id : id};
+                const newUser = new user(request);
                 try {
                     const response = await newUser.save();
                     console.log("hello1");

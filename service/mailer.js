@@ -23,8 +23,6 @@ async function mailerFunc(emailId,userName,pass) {
       subject: "Hello ✔", // Subject line
       text: "userName : " +  userName + " " + "password : " + pass, // plain text body
     });
-
-    console.log(info)
   }
 
   module.exports = { mailerFunc }

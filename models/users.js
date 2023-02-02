@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 // Create Schema
 const UserSchema = new Schema({
+  id: {
+    type: String,
+    required: true
+  },
   userName: {
     type: String,
     required: true
@@ -18,10 +22,45 @@ const UserSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  role : {
-    type : String,
-    enum : ['admin', 'user'],
-    required : true
+  role: {
+    type: String,
+    enum: ['admin', 'user', 'vendor'],
+    required: true
+  }
+});
+
+const catagorySchema = new Schema({
+  id: {
+    type: String,
+    required: true
+  },
+  parentId: {
+    type: String,
+    required: true,
+  },
+  catagoryName: {
+    type: String,
+    required: true
+  }
+});
+const productSchema = new Schema({
+  id: {
+    type: String,
+    required: true
+  },
+  catagoryId: {
+    type: String,
+    required: true
+  },
+  parentId: {
+    type: String,
+    required: true
+  },
+  productName: {
+    type: String,
+    required: true
   }
 });
 module.exports.user = mongoose.model("user", UserSchema);
+module.exports.catagory = mongoose.model("catagory", catagorySchema);
+module.exports.product = mongoose.model("product", productSchema);

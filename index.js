@@ -3,11 +3,23 @@ const app  = express();
 const mongoose = require('mongoose');
 const model = require('./models/users');
 
-//imprting path
-const path = require('path');
-
 //pasing-body
 const bodyparser = require('body-parser');
+
+//parsing-config
+app.use(bodyparser.json({limit : "50mb"}));
+
+// app.use(bodyparser.urlencoded({ limit : "50mb" , extended : false , parameterLimit : 50000}));
+app.use(express.json());
+app.use(express.urlencoded({
+    extended: true
+}));
+
+//to supress warning
+mongoose.set('strictQuery', true);
+
+//imprting path
+const path = require('path');
 
 //mongoDb
 let mongoDb = "mongodb+srv://priyanshgodhani:Priyansh%40suvit@cluster0.syvlswq.mongodb.net/?retryWrites=true&w=majority";
@@ -16,14 +28,8 @@ let mongoDb = "mongodb+srv://priyanshgodhani:Priyansh%40suvit@cluster0.syvlswq.m
 const signUp = require('./routes/signUp');
 const loginReq  = require('./routes/login');
 const upload = require('./routes/upload');
-
-//parsing-config
-app.use(bodyparser.json({limit : "50mb"}));
-// app.use(bodyparser.urlencoded({ limit : "50mb" , extended : false , parameterLimit : 50000}));
-app.use(express.json());
-app.use(express.urlencoded({
-    extended: true
-}));
+const creatCat = require('./routes/creatCatagory');
+const createProduct = require('./routes/createProduct');
 //connection  
 let dbo;
 mongoose.connect(mongoDb , async function(error,db){
@@ -47,6 +53,8 @@ app.get('/',async (req,res)=> {
 app.use('/signUp',signUp);
 app.use('/login',loginReq);
 app.use('/upload',upload);
+app.use('/catagory',creatCat);
+app.use('/product',createProduct);
 
 //port number
 app.listen('3000');
