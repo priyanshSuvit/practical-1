@@ -83,25 +83,57 @@ exports.uploadFIle = async (req,res) => {
               });  
               let responseData = [];
               let errorData = [];
-              for(let x of userData){
-                let response = await service.register(x);
-                let cur;
-                if(response._isError){
-                    cur = {...response.result,err:response.error};
-                    errorData.push(cur);
-                    responseData.push(cur);
-                }else{
-                    cur = {...x,err: ""};
-                    try{
-                        await mailer.mailerFunc(cur.email,cur.userName,cur.password);
-                    }catch(err){
-                        console.log(err);
-                    }
-                    responseData.push(cur);
-                  ;
-                }
+            //   for(let x of userData){
+            //     let response = await service.register(x);
+            //     let cur;
+            //     if(response._isError){
+            //         cur = {...response.result,err:response.error};
+            //         errorData.push(cur);
+            //         responseData.push(cur);
+            //     }else{
+            //         cur = {...x,err: ""};
+            //         try{
+            //             await mailer.mailerFunc(cur.email,cur.userName,cur.password);
+            //         }catch(err){
+            //             console.log(err);
+            //         }
+            //         responseData.push(cur);
+            //       ;
+            //     }
              
-              }
+            //   }
+
+            try {
+                let response  = await service.register(userData, "many");
+             if(response._isError){
+             let err = response.error;
+             err.writeErrors.forEach( el => {
+                let cur = { ...el.err.op , err :el.err.errmsg };
+                errorData.push(cur)
+            })
+        for (let x of err.insertedDocs){
+          let cur = {...x,err: ""};
+                  try{
+                      await mailer.mailerFunc(cur.email,cur.userName,cur.password);
+                  }catch(err){
+                      console.log(err);
+                  }
+                  responseData.push(cur);
+        }
+             }else{
+                for (let x of response){
+                    let cur = {...x,err: ""};
+                            try{
+                                await mailer.mailerFunc(cur.email,cur.userName,cur.password);
+                            }catch(err){
+                                console.log(err);
+                            }
+                            responseData.push(cur);
+                  }
+             }
+            }catch (err) {
+            res.send(err);
+                }
               //convert json to xlsx
               if(errorData.length > 0){
                 var newWB =  xlsx.utils.book_new();
@@ -110,9 +142,8 @@ exports.uploadFIle = async (req,res) => {
               xlsx.writeFile(newWB,"./Excel/test2.xlsx")//file name as param
               }
               res.send(responseData);
-            }
             
         }
-  
+    }
      })
-}
+    }

@@ -1,45 +1,38 @@
 const { user } = require('../models/users');
 const generateUniqueId = require('generate-unique-id');
+const { response } = require('express');
 
- async function register(req,res)  {
-     try {
-     let result = await user.find( { userName : req.userName}).exec();
-                if(result.length != 0){
-                    let temp = {
-                        userName : result[0].userName,
-                        email : result[0].email,
-                        password : result[0].password,
-                        role : result[0].role
-                    }
-                    return {
-                        _isError : true,
-                        error : "user already exist",
-                        result : {...temp}
-                    }
-                }
+async function register(req, arg) {
+
+        try {
+            let response;
+            if (arg == "many") {
+                let doc = [];
+                req.forEach(element => {
+                    const id = generateUniqueId();
+                    let request = { ...element,id : id};
+                    doc.push(request);
+                });
+                 response = await user.insertMany(doc, { ordered: false });
+            } else if (arg == "one") {
+                // req.forEach(element => {
+                //     const id = generateUniqueId();
+                //     let request = { ...element,id : id};
+                //     doc.push(request);
+                // });
+                //  response = await user.insertMany(doc, { ordered: false });
                 const id = generateUniqueId();
-                let request = {...req,id : id};
-                const newUser = new user(request);
-                try {
-                    const response = await newUser.save();
-                    console.log("hello1");
-                     return {
-                        _isError : false,
-                        response : response
-                    };
-                } catch(err) {
-                    return {
-                        _isError : true,
-                        error : err
-                    }
-                }
-            
-    
-     }catch(err){
-        return {
-            _isError : true,
-            err : err
+                let request = { ...req, id: id };
+                const newUser = new user(request)
+                 response = await newUser.save();
+            }
+            return response;
+        } catch (err) {
+            return {
+                _isError: true,
+                error: err,
+                response : response
+            }
         }
-     }
 }
 module.exports = { register };
