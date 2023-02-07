@@ -13,7 +13,7 @@ async function register(req, arg) {
                     let request = { ...element,id : id};
                     doc.push(request);
                 });
-                 response = await user.insertMany(doc, { ordered: false });
+                 response = await user.insertMany(doc, { ordered: true });
             } else if (arg == "one") {
                 // req.forEach(element => {
                 //     const id = generateUniqueId();

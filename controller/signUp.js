@@ -9,7 +9,7 @@ exports.signUp = async (req,res) => {
      }else{
       let temp = response;
         try {
-         // await mailer.mailerFunc(temp.email,temp.userName,temp.password);
+         await mailer.mailerFunc(temp.email,temp.userName,temp.password);
          res.send(temp);
         }catch(err) {
             res.send(err);

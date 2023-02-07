@@ -48,7 +48,4 @@ module.exports.validate = (req,res,next) => {
                 return res.send(errors);
             }
         }
-   
-    
-    
 };

@@ -34,7 +34,7 @@ function convertExcelFileToJsonUsingXlsx(path) {
     for (let i = 0; i < totalSheets; i++) {
   
         // Convert to json using xlsx
-        const tempData = xlsx.utils.sheet_to_json(file.Sheets[sheetNames[i]]);
+        const tempData = xlsx.utils.sheet_to_json(file.Sheets[sheetNames[i]],{defval : ""});
 
         // Add the sheet's json to our data array
         parsedData.push(...tempData);
@@ -83,25 +83,6 @@ exports.uploadFIle = async (req,res) => {
               });  
               let responseData = [];
               let errorData = [];
-            //   for(let x of userData){
-            //     let response = await service.register(x);
-            //     let cur;
-            //     if(response._isError){
-            //         cur = {...response.result,err:response.error};
-            //         errorData.push(cur);
-            //         responseData.push(cur);
-            //     }else{
-            //         cur = {...x,err: ""};
-            //         try{
-            //             await mailer.mailerFunc(cur.email,cur.userName,cur.password);
-            //         }catch(err){
-            //             console.log(err);
-            //         }
-            //         responseData.push(cur);
-            //       ;
-            //     }
-             
-            //   }
 
             try {
                 let response  = await service.register(userData, "many");
@@ -133,13 +114,14 @@ exports.uploadFIle = async (req,res) => {
              }
             }catch (err) {
             res.send(err);
+            return;
                 }
               //convert json to xlsx
               if(errorData.length > 0){
                 var newWB =  xlsx.utils.book_new();
               var newWS = xlsx.utils.json_to_sheet(errorData)
               xlsx.utils.book_append_sheet(newWB,newWS,"name")//workbook name as param
-              xlsx.writeFile(newWB,"./Excel/test2.xlsx")//file name as param
+              xlsx.writeFile(newWB,"./Excel/" + Date.now() + ".xlsx")//file name as param
               }
               res.send(responseData);
             

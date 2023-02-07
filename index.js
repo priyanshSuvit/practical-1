@@ -9,7 +9,7 @@ const bodyparser = require('body-parser');
 //parsing-config
 app.use(bodyparser.json({limit : "50mb"}));
 
-// app.use(bodyparser.urlencoded({ limit : "50mb" , extended : false , parameterLimit : 50000}));
+app.use(bodyparser.urlencoded({ limit : "50mb" , extended : false , parameterLimit : 50000}));
 app.use(express.json());
 app.use(express.urlencoded({
     extended: true
@@ -30,6 +30,8 @@ const loginReq  = require('./routes/login');
 const upload = require('./routes/upload');
 const creatCat = require('./routes/creatCatagory');
 const createProduct = require('./routes/createProduct');
+const uploadFIles = require('./routes/uploadFiles');
+const getProductList = require('./routes/getProductList');
 //connection  
 let dbo;
 mongoose.connect(mongoDb , async function(error,db){
@@ -55,6 +57,7 @@ app.use('/login',loginReq);
 app.use('/upload',upload);
 app.use('/catagory',creatCat);
 app.use('/product',createProduct);
-
+app.use('/test',uploadFIles);
+app.use('/getProduct',getProductList);
 //port number
 app.listen('3000');
