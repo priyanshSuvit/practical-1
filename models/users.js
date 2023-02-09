@@ -63,8 +63,26 @@ const productSchema = new Schema({
   },
   images : {
     type : [ {type : String}]
+  },
+  price : {
+    type :String,
+    required : true
+  }
+});
+const cartSchema = new Schema({
+  id: {
+    type: String,
+    required: true
+  },
+  userId: {
+    type: String,
+    required: true,
+  },
+  cartList : {
+    type :  [{  id : {type : String}, quentity : { type : Number} }]
   }
 });
 module.exports.user = mongoose.model("user", UserSchema);
 module.exports.catagory = mongoose.model("catagory", catagorySchema);
 module.exports.product = mongoose.model("product", productSchema);
+module.exports.cart = mongoose.model("cart",cartSchema)

@@ -9,7 +9,7 @@ const mailer = require('../service/mailer');
 
 //for xlsx to json
 const xlsx = require('xlsx');
-const fs = require('fs');
+// const fs = require('fs');
 
 //generate-password
 const generator = require('generate-password');

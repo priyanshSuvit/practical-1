@@ -21,6 +21,7 @@ async function register(req, arg) {
                 //     doc.push(request);
                 // });
                 //  response = await user.insertMany(doc, { ordered: false });
+                // let result = await  user.find( { userName : request.userName})
                 const id = generateUniqueId();
                 let request = { ...req, id: id };
                 const newUser = new user(request)

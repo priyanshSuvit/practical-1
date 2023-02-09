@@ -51,5 +51,9 @@ exports.getProductList = async (req, res) => {
         { $limit : count }
     ];
     const aggCursor =  await product.aggregate(pipeline);
-    res.send(aggCursor);
+    let result = {
+        data : aggCursor,
+        count  : aggCursor.length
+    }
+    res.send(result);
 }

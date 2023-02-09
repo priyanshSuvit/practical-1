@@ -32,6 +32,8 @@ const creatCat = require('./routes/creatCatagory');
 const createProduct = require('./routes/createProduct');
 const uploadFIles = require('./routes/uploadFiles');
 const getProductList = require('./routes/getProductList');
+const addToCart = require('./routes/addToCart');
+const getCartList = require('./routes/getCartList');
 //connection  
 let dbo;
 mongoose.connect(mongoDb , async function(error,db){
@@ -59,5 +61,7 @@ app.use('/catagory',creatCat);
 app.use('/product',createProduct);
 app.use('/test',uploadFIles);
 app.use('/getProduct',getProductList);
+app.use('/addToCart',addToCart);
+app.use('/getCartList',getCartList);
 //port number
 app.listen('3000');
